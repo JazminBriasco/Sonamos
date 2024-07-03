@@ -1,20 +1,48 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Provider } from 'react-redux';
+import { store } from './Redux/store';
+import { PagesConst } from './Const/_const';
+import Home from './Components/Home';
+import OwnerRegister from './Components/Login/OwnerRegister';
+import UserRegister from './Components/Login/UserRegister';
+import Login from './Components/Login/Login';
 
-export default function App() {
+const App = () => {
+  const Stack = createNativeStackNavigator();
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <>
+    <Provider store={store}>
+      <StatusBar style='light' />
+      <NavigationContainer>
+        <Stack.Navigator> 
+        <Stack.Screen name={PagesConst.HOME} component={Home}
+          options={{
+            headerStyle: { backgroundColor: 'black'},
+            headerTitleStyle: { color: 'white' }
+          }} />
+          <Stack.Screen name={PagesConst.OWNERREGISTER} component={OwnerRegister} 
+            options={{
+              headerStyle: { backgroundColor: 'black' },
+              headerTitleStyle: { color: 'white' }
+            }}/>
+          <Stack.Screen name={PagesConst.USERREGISTER} component={UserRegister}
+            options={{
+              headerStyle: { backgroundColor: 'black' },
+              headerTitleStyle: { color: 'white' }
+            }}/>
+          <Stack.Screen name={PagesConst.LOGIN} component={Login}
+            options={{
+              headerStyle: { backgroundColor: 'black' },
+              headerTitleStyle: { color: 'white' }
+            }}/>
+         </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
+    </>
+   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
