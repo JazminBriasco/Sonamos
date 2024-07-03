@@ -4,7 +4,9 @@ import { addUserHTTP, getUserHTTP } from "../../http/httpOwnerUser";
 
 export const UserActions = {
     addUser,
-    getAllUsers
+    getAllUsers,
+    addLoggedUser,
+    getLoggedUser
 }
 
 function addUser( user ) {
@@ -27,6 +29,43 @@ function getAllUsers() {
         })
         .catch(error => {
             dispatch({type: ReduxUserOwnerAction.GET_USEROWNERS_FAILURE, payload: error})
+        })
+    }
+}
+
+const loadUser = async () => {
+    return await AsyncStorage.getItem('userLogged');
+};
+
+function getLoggedUser() {
+    return (dispatch) => {
+        return loadUser().then(res => {
+            dispatch({ type: ReduxUserOwnerAction.GET_USER_LOGGED, payload: res})
+        })
+        .catch(error => {
+            dispatch({type: ReduxUserOwnerAction.GET_USER_LOGGED_FAILURE, payload: error})
+        })
+    }   
+}
+
+const setUser = async (userToSign) => {
+  //  console.log('Seteando en el action: ',userToSign);
+    try{
+        return await AsyncStorage.setItem('userLogged', JSON.stringify(userToSign));
+
+    }catch(error){
+        console.log('error', error);
+    }
+};
+
+function addLoggedUser( user ) {
+    //console.log('Por setear en el action: ',user);
+    return (dispatch) => {
+        return setUser(user).then(res => {
+            dispatch({ type: ReduxUserOwnerAction.SET_USER_LOGGED, payload: user})
+        })
+        .catch(error => {
+            dispatch({type: ReduxUserOwnerAction.SET_USER_LOGGED_FAILURE, payload: error})
         })
     }
 }

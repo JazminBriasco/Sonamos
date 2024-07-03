@@ -8,9 +8,13 @@ import Home from './Components/Home';
 import OwnerRegister from './Components/Login/OwnerRegister';
 import UserRegister from './Components/Login/UserRegister';
 import Login from './Components/Login/Login';
+import Rooms from './Screens/Rooms';
+import { useEffect } from 'react';
 
 const App = () => {
   const Stack = createNativeStackNavigator();
+
+  const userName = store.getState().userOwnerReducer?.loggedUser?.name
 
   return (
     <>
@@ -21,7 +25,8 @@ const App = () => {
         <Stack.Screen name={PagesConst.HOME} component={Home}
           options={{
             headerStyle: { backgroundColor: 'black'},
-            headerTitleStyle: { color: 'white' }
+            headerTitleStyle: { color: 'white' },
+            title: userName ? 'Hola '+{userName} + '!' : 'SONAMOS'
           }} />
           <Stack.Screen name={PagesConst.OWNERREGISTER} component={OwnerRegister} 
             options={{
@@ -34,6 +39,11 @@ const App = () => {
               headerTitleStyle: { color: 'white' }
             }}/>
           <Stack.Screen name={PagesConst.LOGIN} component={Login}
+            options={{
+              headerStyle: { backgroundColor: 'black' },
+              headerTitleStyle: { color: 'white' }
+            }}/>
+            <Stack.Screen name={PagesConst.ROOMS} component={Rooms}
             options={{
               headerStyle: { backgroundColor: 'black' },
               headerTitleStyle: { color: 'white' }
