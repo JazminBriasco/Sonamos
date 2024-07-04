@@ -2,14 +2,11 @@ import { ReduxUserOwnerAction } from "../../Const/_const";
 
 const initialState = {
     userOwners: [],
-    loggedUser: {},
+    loggedUser: undefined,
     error: null
 }
 
 const userOwnerReducer = (state = initialState, action) => {
-    //console.log('Por despachar');
-    //console.log('state ', state.loggedUser);
-    //console.log('action ', action);
     switch (action.type) {
         case ReduxUserOwnerAction.ADD_USEROWNER:
             return {
@@ -38,8 +35,7 @@ const userOwnerReducer = (state = initialState, action) => {
         }
 
         case ReduxUserOwnerAction.SET_USER_LOGGED:
-            console.log('state ', state);
-            console.log('action ', action);
+           // console.log('payload SET: ', action.payload);
             return { 
                 ...state, 
                 loggedUser: action.payload,
@@ -53,6 +49,7 @@ const userOwnerReducer = (state = initialState, action) => {
             }
 
         case ReduxUserOwnerAction.GET_USER_LOGGED:
+       //     console.log('payload GET: ', action.payload);
             return { 
                 ...state, 
                 loggedUser: action.payload,

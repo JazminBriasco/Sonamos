@@ -7,7 +7,7 @@ import { PagesConst, UserObjectConst, UserTypeConst } from '../../Const/_const';
 import { useNavigation } from '@react-navigation/native';
 import  AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Login = ({getAllUsers, userOwner, addLoggedUser}) => {
+const Login = ({getAllUsers, userOwner, addLoggedUser, getLoggedUser}) => {
 
     const [registerData, setRegisterData] = useState({});
     const [isFormValid, setIsFormValid] = useState(false);
@@ -40,9 +40,10 @@ const Login = ({getAllUsers, userOwner, addLoggedUser}) => {
     const checkForm = async () => {
         try {
             if (isFormValid) {
-                await AsyncStorage.setItem('userLogged', JSON.stringify({}));
+                //await AsyncStorage.setItem('userLogged', JSON.stringify({}));
                 addLoggedUser(userToSign);
-                navigation.replace(PagesConst.ROOMS);
+                console.log('getLoggedUser: ', getLoggedUser());
+                navigation.navigate(PagesConst.ROOMS);
             } else {
                 setInvalidFormInfo('Usuario o contraseña incorrectos, por favor vuelva a intentarlo');
             }
@@ -113,7 +114,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToPtops = {
     getAllUsers: UserActions.getAllUsers,
-    addLoggedUser: UserActions.addLoggedUser
+    addLoggedUser: UserActions.addLoggedUser,
+    getLoggedUser: UserActions.getLoggedUser
 }
 
 export default connect(mapStateToProps, mapDispatchToPtops)(Login);

@@ -4,6 +4,8 @@ export const PagesConst = {
     HOME: 'HOME',
     LOGIN: 'LOGIN',
     ROOMS: 'ROOMS',
+    SONAMOS: 'SONAMOS',
+    ROOMDETAIL: 'ROOMDETAIL'
 }
 
 export const UserObjectConst = {

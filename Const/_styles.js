@@ -1,8 +1,10 @@
 export const COLORS = {
     bbkgColor1: 'white',
     textColorBlack: 'black',
-    fail: 'redrgb(255, 0, 0)',
-
+    black: 'black',
+    red: 'rgb(177, 0, 0)',
+    fail: 'red',
+    pressed: 'rgb(196, 196, 196)'
 }
 
 export const FONTSIZE = {

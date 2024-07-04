@@ -1,26 +1,21 @@
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Button, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS, FONTSIZE } from '../Const/_styles';
 import { PagesConst } from '../Const/_const';
 import { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Rooms from '../Screens/Rooms';
 import { UserActions } from '../Redux/Actions/userAction';
 import { connect } from 'react-redux';
 
 const Home = ({getLoggedUser, loggedUser}) => {
     const navigation = useNavigation();
-    const [userLog, setUserLog] = useState(null);
+    const [userLog, setUserLog] = useState(loggedUser);
 
-    useEffect(() => {
-      getLoggedUser();
-      setUserLog(loggedUser);
-    }, [loggedUser]);
-
-
+    //console.log('loggedUser: ', loggedUser);
     return (
+      <ScrollView>
       <View style={styles.container}>
-        {(userLog?.name !== undefined) ?
+        {(loggedUser !== undefined && loggedUser !== null) ?
           (<Rooms ></Rooms>)
           :
           (<View>
@@ -36,14 +31,14 @@ const Home = ({getLoggedUser, loggedUser}) => {
         </View>)
       }
     </View>
-  );
+    </ScrollView> );
 };
   
   const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        display:'flex',
         backgroundColor: COLORS.bbkgColor1,
-        padding: 20
+        padding: 10
     },
     header: {
         fontSize: FONTSIZE.header1,

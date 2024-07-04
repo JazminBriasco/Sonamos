@@ -1,6 +1,7 @@
 import { User } from "../../Class/User";
 import { ReduxUserOwnerAction } from "../../Const/_const";
 import { addUserHTTP, getUserHTTP } from "../../http/httpOwnerUser";
+import  AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const UserActions = {
     addUser,
@@ -49,17 +50,14 @@ function getLoggedUser() {
 }
 
 const setUser = async (userToSign) => {
-  //  console.log('Seteando en el action: ',userToSign);
     try{
-        return await AsyncStorage.setItem('userLogged', JSON.stringify(userToSign));
-
+        if(userToSign !== undefined) return await AsyncStorage.setItem('userLogged', JSON.stringify(userToSign));
     }catch(error){
         console.log('error', error);
     }
 };
 
 function addLoggedUser( user ) {
-    //console.log('Por setear en el action: ',user);
     return (dispatch) => {
         return setUser(user).then(res => {
             dispatch({ type: ReduxUserOwnerAction.SET_USER_LOGGED, payload: user})
