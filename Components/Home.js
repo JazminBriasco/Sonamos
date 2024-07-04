@@ -11,7 +11,9 @@ const Home = ({loggedUser}) => {
     const navigation = useNavigation();
     const [userLog, setUserLog] = useState(loggedUser);
 
-    //console.log('loggedUser: ', loggedUser);
+    console.log('HOME');
+    console.log('loggedUser: ', loggedUser);
+
     return (
       <ScrollView>
       <View style={styles.container}>

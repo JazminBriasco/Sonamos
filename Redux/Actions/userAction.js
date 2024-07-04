@@ -58,6 +58,7 @@ const setUser = async (userToSign) => {
 };
 
 function addLoggedUser( user ) {
+    console.log(user);
     return (dispatch) => {
         return setUser(user).then(res => {
             dispatch({ type: ReduxUserOwnerAction.SET_USER_LOGGED, payload: user})

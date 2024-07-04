@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { PagesConst, UserObjectConst, UserTypeConst } from '../../Const/_const';
 import { useNavigation } from '@react-navigation/native';
 import  AsyncStorage from '@react-native-async-storage/async-storage';
+import { User } from '../../Class/User';
 
 const Login = ({getAllUsers, userOwner, addLoggedUser, getLoggedUser}) => {
 
@@ -29,6 +30,7 @@ const Login = ({getAllUsers, userOwner, addLoggedUser, getLoggedUser}) => {
     useEffect(() =>{
         const checkUser = userOwner.find(user => user.contactNumber.slice(3) === registerData.contactNumber);
         if (checkUser && checkUser?.password?.toUpperCase() === registerData?.password?.toUpperCase()) {
+           // const user = new User(checkUser.id, checkUser.name, checkUser.contactNumber, checkUser.password, checkUser.mail, checkUser.isAdmin, checkUser.rooms);
             setUserToSign(checkUser);
             setIsFormValid(true);
         } else{ 
@@ -41,8 +43,9 @@ const Login = ({getAllUsers, userOwner, addLoggedUser, getLoggedUser}) => {
         try {
             if (isFormValid) {
                 //await AsyncStorage.setItem('userLogged', JSON.stringify({}));
+                console.log('userToSign', userToSign);
                 addLoggedUser(userToSign);
-                console.log('getLoggedUser: ', getLoggedUser());
+                //console.log('getLoggedUser: ', getLoggedUser());
                 navigation.navigate(PagesConst.SONAMOS);
             } else {
                 setInvalidFormInfo('Usuario o contraseña incorrectos, por favor vuelva a intentarlo');

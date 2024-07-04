@@ -12,6 +12,8 @@ const Rooms = ({ loggedUser, addLoggedUser}) => {
   
   const navigation = useNavigation();
 
+  console.log('ROOMS');
+
   const exit = () => {
     addLoggedUser(undefined);
     AsyncStorage.removeItem('userLogged');
@@ -20,7 +22,7 @@ const Rooms = ({ loggedUser, addLoggedUser}) => {
 
     return (
       <ScrollView>
-      <View>
+      <View style= {styles.container}>
         <View style={styles.order}>
           <Text style={styles.header}>Salas disponibles</Text>
           <Button title={'AZ↑↓'} color={COLORS.red}></Button>
@@ -79,6 +81,9 @@ const Rooms = ({ loggedUser, addLoggedUser}) => {
   };
   
   const styles = StyleSheet.create({
+    container:{
+      marginHorizontal:10
+    },
     order: {
       flexDirection: 'row',
       alignItems:'center',

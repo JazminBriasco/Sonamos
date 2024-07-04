@@ -1,5 +1,6 @@
 export const COLORS = {
     bbkgColor1: 'white',
+    white: 'white',
     textColorBlack: 'black',
     black: 'black',
     red: 'rgb(177, 0, 0)',

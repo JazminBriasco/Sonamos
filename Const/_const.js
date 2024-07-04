@@ -5,7 +5,8 @@ export const PagesConst = {
     LOGIN: 'LOGIN',
     ROOMS: 'ROOMS',
     SONAMOS: 'SONAMOS',
-    ROOMDETAIL: 'ROOMDETAIL'
+    ROOMDETAIL: 'ROOMDETAIL',
+    PROFILE: 'PROFILE',
 }
 
 export const UserObjectConst = {
