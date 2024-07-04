@@ -43,7 +43,7 @@ const Login = ({getAllUsers, userOwner, addLoggedUser, getLoggedUser}) => {
                 //await AsyncStorage.setItem('userLogged', JSON.stringify({}));
                 addLoggedUser(userToSign);
                 console.log('getLoggedUser: ', getLoggedUser());
-                navigation.navigate(PagesConst.ROOMS);
+                navigation.navigate(PagesConst.SONAMOS);
             } else {
                 setInvalidFormInfo('Usuario o contraseña incorrectos, por favor vuelva a intentarlo');
             }

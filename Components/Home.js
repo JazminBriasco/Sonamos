@@ -7,7 +7,7 @@ import Rooms from '../Screens/Rooms';
 import { UserActions } from '../Redux/Actions/userAction';
 import { connect } from 'react-redux';
 
-const Home = ({getLoggedUser, loggedUser}) => {
+const Home = ({loggedUser}) => {
     const navigation = useNavigation();
     const [userLog, setUserLog] = useState(loggedUser);
 
@@ -15,8 +15,8 @@ const Home = ({getLoggedUser, loggedUser}) => {
     return (
       <ScrollView>
       <View style={styles.container}>
-        {(loggedUser !== undefined && loggedUser !== null) ?
-          (<Rooms ></Rooms>)
+        {(loggedUser) ?
+          (<Rooms/>)
           :
           (<View>
           <Text style={styles.header}>¡Bienvenido a SONAMOS!</Text>
@@ -57,11 +57,8 @@ const mapStateToProps = (state) => (
   {
     loggedUser: state.userOwnerReducer.loggedUser
   });
-  
-  const mapDispatchToPtops = {
-    getLoggedUser: UserActions.getLoggedUser,
-  }
+
   
 
-export default connect(mapStateToProps, mapDispatchToPtops)(Home);
+export default connect(mapStateToProps)(Home);
   
