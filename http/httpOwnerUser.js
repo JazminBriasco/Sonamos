@@ -22,3 +22,13 @@ export async function getUserHTTP() {
     }
     return users;
 }
+
+export async function modifyUserHTTP( user ) {
+    const urlPut = URL + '/users/' + user.id + '.json';
+    try {
+        const res = await axios.put(urlPut, user); 
+        return (res);
+    } catch (error) {
+        throw error; 
+  }
+}

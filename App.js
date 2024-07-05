@@ -16,6 +16,7 @@ import RoomDetail from './Screens/RoomDetail';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Profile from './Screens/Profile';
 import { UserActions } from './Redux/Actions/userAction';
+import AddRoom from './Screens/AddRoom';
 
 const App = () => {
 
@@ -73,12 +74,12 @@ const App = () => {
                 headerTitleStyle: { color: 'white' },
                 headerTitleAlign: 'center'
               }} />
-          <Stack.Screen name={PagesConst.HOME} component={Home}             options={{headerShown: false,}}
-          />
+          <Stack.Screen name={PagesConst.HOME} component={Home} options={{headerShown: false}} />
           <Stack.Screen name={PagesConst.OWNERREGISTER} component={OwnerRegister} />
           <Stack.Screen name={PagesConst.USERREGISTER} component={UserRegister}/>
           <Stack.Screen name={PagesConst.LOGIN} component={Login}/>
           <Stack.Screen name={PagesConst.ROOMS} component={Rooms}/>
+          <Stack.Screen name={PagesConst.ADDROOM} component={AddRoom}/>
           
           <Stack.Screen name={PagesConst.ROOMDETAIL} component={RoomDetail}  options={{
                 title: '♪ SONAMOS ♪',

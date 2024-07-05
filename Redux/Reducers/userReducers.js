@@ -42,11 +42,11 @@ const userOwnerReducer = (state = initialState, action) => {
                 error: null
             }
         
-            case ReduxUserOwnerAction.SET_USER_LOGGED_FAILURE:
-                return { 
-                    ...state, 
-                    error: action.error
-            }
+        case ReduxUserOwnerAction.SET_USER_LOGGED_FAILURE:
+            return { 
+                ...state, 
+                error: action.error
+        }
 
         case ReduxUserOwnerAction.GET_USER_LOGGED:
             return { 
@@ -62,6 +62,40 @@ const userOwnerReducer = (state = initialState, action) => {
             error: action.error
         }
         
+        case ReduxUserOwnerAction.MODIFY_USER:
+            //  console.log('payload MODYFY USER: ', action.payload);
+            let id = action.payload;
+            id = JSON.parse(id).id;
+          //  console.log(id);
+          // console.log(state.userOwners.find(user => user.id === id));
+          
+          //let item = state.userOwners.find(user => user.id === id); 
+          //console.log('item', item);
+          //if (item){ item = action.payload}
+          
+            //console.log('userOwner: ', state.userOwners[0]);
+            //console.log('action.payload', action.payload);
+            const index = state.userOwners.findIndex(user => user.id === id);
+         //   console.log(index);
+            if (index !== -1) {
+            //  console.log('1', state.userOwners[index].rooms);
+          //   console.log('2', JSON.parse(action.payload).rooms);
+              state.userOwners[index].rooms = JSON.parse(action.payload).rooms;
+            }
+          
+       //     console.log('state.userOwners', state.userOwners[0].rooms);      
+
+            return { 
+                 ...state, 
+                 userOwners: state.userOwners,
+                 error: null
+             }
+         
+         case ReduxUserOwnerAction.MODIFY_USER_FAILURE:
+             return { 
+                 ...state, 
+                 error: action.error
+         }
         default:
             return state;
     }

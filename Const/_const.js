@@ -7,6 +7,7 @@ export const PagesConst = {
     SONAMOS: 'SONAMOS',
     ROOMDETAIL: 'ROOMDETAIL',
     PROFILE: 'PROFILE',
+    ADDROOM: 'ADDROOM',
 }
 
 export const UserObjectConst = {
@@ -16,6 +17,16 @@ export const UserObjectConst = {
     MAIL: 'MAIL',
     PASSWORD: 'PASSWORD',
     ISADMIN: 'ISADMIN',
+    ROOMS: 'ROOMS',
+}
+
+export const RoomObjectConst = {
+    NAME: 'NAME', 
+    ADRESS: 'ADRESS', 
+    DESCRIPTION: 'DESCRIPTION',
+    GALLERY: 'GALLERY',
+    AVAILABILITY: 'AVAILABILITY',
+    PRICE: 'PRICE',
     ROOMS: 'ROOMS',
 }
 
@@ -36,5 +47,7 @@ export const ReduxUserOwnerAction = {
     GET_USER_LOGGED: 'GET_USER_LOGGED',
     GET_USER_LOGGED_FAILURE: 'GET_USER_LOGGED_FAILURE',
     SET_USER_LOGGED: 'SET_USER_LOGGED',
-    SET_USER_LOGGED_FAILURE: 'SET_USER_LOGGED_FAILURE'
+    SET_USER_LOGGED_FAILURE: 'SET_USER_LOGGED_FAILURE',
+    MODIFY_USER: 'MODIFY_USER',
+    MODIFY_USER_FAILURE: 'MODIFY_USER_FAILURE',
 }

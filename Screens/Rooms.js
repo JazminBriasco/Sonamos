@@ -20,6 +20,10 @@ const Rooms = ({ loggedUser, addLoggedUser}) => {
     navigation.navigate(PagesConst.HOME)
   }
 
+  useEffect(() => {
+    loggedUser === undefined && navigation.navigate(PagesConst.HOME);
+  }),[loggedUser];
+
     return (
       <ScrollView>
       <View style= {styles.container}>

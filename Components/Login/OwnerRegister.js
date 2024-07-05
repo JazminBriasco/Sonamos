@@ -48,7 +48,7 @@ const OwnerRegister = ({addUser, getAllUsers, userOwner}) => {
   
 
     const handleUserSubmit = () => {
-        const newUser = new User('', registerData?.name, '+54'+registerData.contactNumber, registerData.password, registerData.mail, true, null);
+        const newUser = new User('', registerData?.name, '+54'+registerData.contactNumber, registerData.password, registerData.mail, true, '');
         addUser(newUser);
         resetValues();
     }

@@ -1,17 +1,18 @@
 import { User } from "../../Class/User";
 import { ReduxUserOwnerAction } from "../../Const/_const";
-import { addUserHTTP, getUserHTTP } from "../../http/httpOwnerUser";
+import { addUserHTTP, getUserHTTP, modifyUserHTTP } from "../../http/httpOwnerUser";
 import  AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const UserActions = {
     addUser,
     getAllUsers,
     addLoggedUser,
-    getLoggedUser
+    getLoggedUser,
+    modifyUser,
 }
 
 function addUser( user ) {
-    const newUser = new User(user.id, user.name, user.contactNumber, user.password, user.mail, user.isAdmin, [] );
+    const newUser = new User(user.id, user.name, user.contactNumber, user.password, user.mail, user.isAdmin, user.rooms );
     return(dispatch) => {
         return addUserHTTP(newUser).then(res => {
             dispatch({type: ReduxUserOwnerAction.ADD_USEROWNER, payload: res.config.data})
@@ -20,6 +21,19 @@ function addUser( user ) {
             dispatch({ type: ReduxUserOwnerAction.ADD_USEROWNER_FAILURE, payload: error });
         });
         
+    }
+}
+
+function modifyUser (user) {
+   // console.log('userAction', user);
+    return(dispatch) => {
+        return modifyUserHTTP(user).then(res => {
+       //     console.log('res', res.config.data);
+            dispatch({type: ReduxUserOwnerAction.MODIFY_USER, payload: res.config.data})
+        })
+        .catch(error => {
+            dispatch({ type: ReduxUserOwnerAction.MODIFY_USER_FAILURE, payload: error });
+        });
     }
 }
 
