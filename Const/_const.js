@@ -51,3 +51,7 @@ export const ReduxUserOwnerAction = {
     MODIFY_USER: 'MODIFY_USER',
     MODIFY_USER_FAILURE: 'MODIFY_USER_FAILURE',
 }
+
+export const TypeCard = {
+    CARDMYROOM: 'CARDMYROOM'
+}

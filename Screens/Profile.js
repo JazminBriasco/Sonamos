@@ -1,10 +1,11 @@
 import { Button, FlatList, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS, FONTSIZE } from '../Const/_styles';
-import { PagesConst } from '../Const/_const';
+import { PagesConst, TypeCard } from '../Const/_const';
 import { useEffect, useState } from 'react';
 import { UserActions } from '../Redux/Actions/userAction';
 import { connect } from 'react-redux';
+import Card from '../Components/Card';
 
 const Profile = ({loggedUser, getLoggedUser}) => {
   const [user, setUser] = useState(null);
@@ -28,15 +29,19 @@ const Profile = ({loggedUser, getLoggedUser}) => {
     <ScrollView>
       <View style={styles.container}>
         <Text style={styles.header}>¡Hola {user?.name}!</Text>
-        <Text style={styles.text}>Aquí se encontrarían las salas y acciones que puede hacer el admin / usuario</Text>
-        <Text style={styles.subHeader}>Tus salas</Text>
+        <Text style={styles.text}>Aquí se encontrarían tus salas y las opciones de administrador</Text>
+        <Text style={styles.subHeader}>Salas</Text>
         {loggedUser?.rooms ? 
           <FlatList
                 data={loggedUser.rooms}
-                renderItem={({ item }) => <Text>{item.adress} -  {item.description} - {item.price} - {item.name} - {item.availability} - {item.gallery}</Text>}
+                renderItem={({ item }) => 
+               <Card type={TypeCard.CARDMYROOM} item={item}></Card>
+              }
+                keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
             />
         : 
           <Text >Aún no tienes salas agregadas</Text>}
+          
         <Text style={styles.subHeader}>Tus reservas</Text>
         <Text >Tus reservas</Text>
         <Text >Tus reservas</Text>
@@ -45,7 +50,7 @@ const Profile = ({loggedUser, getLoggedUser}) => {
         <Button title='Modificar perfil'></Button>
         <Button title='Ver estadísticas (Salas reservadas, dinero ganado, pago realizado, mercado pago)'></Button>
       </View>
-    </ScrollView>
+      </ScrollView>
   );
 };
 
