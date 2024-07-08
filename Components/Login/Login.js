@@ -33,6 +33,7 @@ const Login = ({getAllUsers, userOwner, addLoggedUser, getLoggedUser}) => {
            // const user = new User(checkUser.id, checkUser.name, checkUser.contactNumber, checkUser.password, checkUser.mail, checkUser.isAdmin, checkUser.rooms);
             setUserToSign(checkUser);
             setIsFormValid(true);
+           // console.log(checkUser);
         } else{ 
             setIsFormValid(false);
         }
@@ -45,7 +46,7 @@ const Login = ({getAllUsers, userOwner, addLoggedUser, getLoggedUser}) => {
                 //await AsyncStorage.setItem('userLogged', JSON.stringify({}));
               //  console.log('userToSign', userToSign);
                 addLoggedUser(userToSign);
-                //console.log('getLoggedUser: ', getLoggedUser());
+                //console.log('getLoggedUser: ', userToSign);
                 navigation.navigate(PagesConst.SONAMOS);
             } else {
                 setInvalidFormInfo('Usuario o contraseña incorrectos, por favor vuelva a intentarlo');

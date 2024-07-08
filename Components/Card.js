@@ -54,6 +54,8 @@ const styles = StyleSheet.create({
         marginTop: 5,
         width: 80,
         borderRadius: 5,
+        borderWidth:2,
+        borderBlockColor: 'black',
         height: 50,
       },
 });

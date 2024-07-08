@@ -22,14 +22,18 @@ const Profile = ({loggedUser, getLoggedUser}) => {
   }, [getLoggedUser]);
 
   useEffect(() => {
+    console.log(loggedUser);
     if(user?.name === undefined || user === null) setUser(loggedUser);
   }, [loggedUser]);
 
   return (
+    <ScrollView>
       <View style={styles.container}>
-        <Text style={styles.header}>¡Hola {user?.name}!</Text>
+        <Text style={styles.header}>¡Hola {loggedUser?.name}!</Text>
+        <Text style={styles.legend}>{loggedUser?.id} - {loggedUser?.contactNumber} - {loggedUser?.mail} </Text>
         <Text style={styles.text}>Aquí se encontrarían tus salas y las opciones de administrador</Text>
-        <Text style={styles.subHeader}>Salas</Text>
+        <Text style={styles.subHeader}>Tus salas</Text>
+        <View>
         {loggedUser?.rooms ? 
           <FlatList
                 data={loggedUser.rooms}
@@ -37,10 +41,10 @@ const Profile = ({loggedUser, getLoggedUser}) => {
                <Card type={TypeCard.CARDMYROOM} item={item}></Card>
               }
                 keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
-            />
-        : 
-          <Text >Aún no tienes salas agregadas</Text>}
-          
+                />
+                : 
+                <Text >Aún no tienes salas agregadas</Text>}
+                </View>
         <Text style={styles.subHeader}>Tus reservas</Text>
         <Text >Tus reservas</Text>
         <Text >Tus reservas</Text>
@@ -49,6 +53,7 @@ const Profile = ({loggedUser, getLoggedUser}) => {
         <Button title='Modificar perfil'></Button>
         <Button title='Ver estadísticas (Salas reservadas, dinero ganado, pago realizado, mercado pago)'></Button>
       </View>
+      </ScrollView>
   );
 };
 
@@ -64,10 +69,18 @@ const styles = StyleSheet.create({
     marginVertical:10
   },
   subHeader: {
-    fontSize: FONTSIZE.subHeaders
+    fontSize: FONTSIZE.subHeaders,
+    marginVertical:10,
+    marginTop:20, 
+    textAlign:'center',
   },
   text: {
       fontSize: FONTSIZE.text,
+  },
+  legend: {
+    fontSize: 10,
+    textAlign:'center',
+    marginBottom:10
   }
   });
 const mapStateToProps = (state) => ({

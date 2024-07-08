@@ -12,7 +12,7 @@ const Home = ({loggedUser, route}) => {
     const navigation = useNavigation();
     const [userLog, setUserLog] = useState(loggedUser);
 
-    //console.log('loggedUser: ', loggedUser);
+    console.log('loggedUser: ', loggedUser);
    // console.log('navigation', route?.params);
 
     return (

@@ -97,7 +97,7 @@ const AddRoom = ({ getAllUsers, userOwner, modifyUser, addLoggedUser }) => {
     const userToModify = userOwner.find(
       (userArray) => userArray.id === user.id
     );
-    userToModify.rooms === undefined || userToModify.rooms?.length === 0
+    userToModify?.rooms === undefined || userToModify?.rooms?.length === 0
       ? (userToModify.rooms = [roomFormData])
       : userToModify.rooms.push(roomFormData);
 
