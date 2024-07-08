@@ -3,12 +3,14 @@ import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { UserActions } from '../../Redux/Actions/userAction';
 import { COLORS, FONTSIZE } from '../../Const/_styles';
-import { UserObjectConst } from '../../Const/_const';
+import { PagesConst, UserObjectConst } from '../../Const/_const';
 import { User } from '../../Class/User';
+import { useNavigation } from '@react-navigation/native';
 
 const OwnerRegister = ({addUser, getAllUsers, userOwner}) => {
 
     const initialValues = new User('','','','','');
+    const navigation = useNavigation();
 
     const [registerData, setRegisterData] = useState(initialValues);
     const [validForm, setValidForm] = useState(false);
@@ -22,6 +24,7 @@ const OwnerRegister = ({addUser, getAllUsers, userOwner}) => {
         setRegisterData(initialValues);
         setValidForm(false);
         setUserAlreadyExist(false);
+        navigation.navigate(PagesConst.HOME, 'fromRegister');
     }
 
     const validateForm = () => {

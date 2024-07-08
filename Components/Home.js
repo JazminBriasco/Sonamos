@@ -6,51 +6,73 @@ import { useEffect, useState } from 'react';
 import Rooms from '../Screens/Rooms';
 import { UserActions } from '../Redux/Actions/userAction';
 import { connect } from 'react-redux';
+import { StatusBar } from 'expo-status-bar';
 
-const Home = ({loggedUser}) => {
+const Home = ({loggedUser, route}) => {
     const navigation = useNavigation();
     const [userLog, setUserLog] = useState(loggedUser);
 
-    console.log('HOME');
     console.log('loggedUser: ', loggedUser);
+   // console.log('navigation', route?.params);
 
     return (
-      <ScrollView>
-      <View style={styles.container}>
-        {(loggedUser) ?
-          (<Rooms/>)
-          :
-          (<View>
-          <Text style={styles.header}>¡Bienvenido a SONAMOS!</Text>
-          <Text style={styles.text}>Si tu objetivo es alquilar tus salas a los músicos de Mar del Plata registrate </Text>
-          <Button title={ 'AQUÍ!'} onPress={() => navigation.navigate(PagesConst.OWNERREGISTER)}></Button>
-          
-          <Text style={styles.text}>Si tu objetivo es buscar lugar donde ensayar de Mar del Plata registrate </Text>
-          <Button title={ 'AQUÍ!'} onPress={() => navigation.navigate(PagesConst.USERREGISTER)}></Button>
-
-          <Text style={styles.text}>Si ya tenes cuenta logeate </Text>
-          <Button title={ 'AQUÍ!'} onPress={() => navigation.navigate(PagesConst.LOGIN)}></Button>
-        </View>)
-      }
-    </View>
-    </ScrollView> );
-};
+        <View style={styles.container} >
+        <StatusBar style='default' />
+          {loggedUser ? (
+            <Rooms />
+          ) : (
+            <View style={styles.body}>
+              {route?.params !== 'fromRegister' ? (
+                <View> 
+                  <Text style={styles.header}>¡Bienvenido a SONAMOS!</Text>
+                  <Text style={styles.text}>Si tu objetivo es alquilar tus salas a los músicos de Mar del Plata regístrate </Text>
+                  <Button title={'AQUÍ!'} onPress={() => navigation.navigate(PagesConst.OWNERREGISTER)} />
+                  
+                  <Text style={styles.text}>Si tu objetivo es buscar lugar donde ensayar en Mar del Plata regístrate </Text>
+                  <Button title={'AQUÍ!'} onPress={() => navigation.navigate(PagesConst.USERREGISTER)} />
+                  
+                  <Text style={styles.text}>Si ya tienes cuenta, inicia sesión </Text>
+                  <Button title={'AQUÍ!'} onPress={() => navigation.navigate(PagesConst.LOGIN)} />
+                </View>
+              ):
+              <View style={styles.textLogin}>
+                <Text style={styles.text}>Por favor inicia sesión ♫ </Text>
+                <Button title={'AQUÍ!'} onPress={() => navigation.navigate(PagesConst.LOGIN)} />
+              </View>
+              }
+            </View>
+          )}
+        </View>
+    );
+  };
+  
   
   const styles = StyleSheet.create({
     container: {
         display:'flex',
+        flex:1,
         backgroundColor: COLORS.bbkgColor1,
-        padding: 10
+        padding: 10,
+    },
+    body: {
+      backgroundColor: COLORS.bbkgColor1,
+      marginVertical: '10%',
+      paddingVertical: '20%',
+      paddingHorizontal:10
     },
     header: {
         fontSize: FONTSIZE.header1,
         textAlign:'center',
-        marginTop: 20,
-        marginBottom: 20
+        marginVertical: 10
     },
     text: {
         fontSize: FONTSIZE.text,
         marginTop: 50,
+        marginBottom:20,
+        textAlign: 'center',
+    },
+    textLogin: {
+      marginVertical:'50%'
     }
   });
 

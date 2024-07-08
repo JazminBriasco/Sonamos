@@ -28,7 +28,7 @@ const Login = ({getAllUsers, userOwner, addLoggedUser, getLoggedUser}) => {
     };
 
     useEffect(() =>{
-        const checkUser = userOwner.find(user => user.contactNumber.slice(3) === registerData.contactNumber);
+        const checkUser = userOwner.find(user => user.contactNumber?.slice(3) === registerData.contactNumber);
         if (checkUser && checkUser?.password?.toUpperCase() === registerData?.password?.toUpperCase()) {
            // const user = new User(checkUser.id, checkUser.name, checkUser.contactNumber, checkUser.password, checkUser.mail, checkUser.isAdmin, checkUser.rooms);
             setUserToSign(checkUser);

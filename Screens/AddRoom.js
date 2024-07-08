@@ -41,64 +41,31 @@ const AddRoom = ({getAllUsers, userOwner, modifyUser, addLoggedUser}) => {
     };
     
     const checkNewRoom = () => {
-     /*   if (roomFormData.adress.length >= 3 &&
-        roomFormData.description.length >= 3 &&
-        roomFormData.availability.length >= 3 &&
-        roomFormData.price.length >= 3) {
+        if (
+        roomFormData.name.length >= 1 &&   
+        roomFormData.adress.length >= 2 &&
+        roomFormData.description.length >= 2 &&
+        roomFormData.availability.length >= 2 &&
+        roomFormData.price.length >= 2) {
             setIsFormValid(true);
-            Alert.alert('¿Datos correctos?', '', 
+            /*Alert.alert('¿Datos correctos?', '', 
                 [{ text: "OK", style: "cancel", onPress: redirect}, { text: "NOPE", style: "cancel" }]
-            );
+            );*/
+            redirect();
+            
         } else {
             setIsFormValid(false);
-        }*/
-       
-       //TEST
-       setIsFormValid(true);
-       redirect();
-    
-        //TEST
+        }
     }
-    
-const redirect = () => {
-    //navigation.goBack();
-    // Add Room Firebase
-    
-    //TEST
-    newRoom = new Room(
-        name ='',
-        adress= 'Santiago del Estero 2408',
-        description= 'Muy linda',
-        gallery= 'Después',
-        availability= 'Ver calendario',
-        price= '8000'
-    );
-    
-    setRoomFormData(newRoom);
-    
-    
-    //console.log(roomFormData);
-    //user.rooms = [roomFormData];
-    //console.log(user);
-
-   // console.log('userOwner', userOwner);
-    //console.log('user', user.id);
-    
-    const userToModify = userOwner.find(userArray => userArray.id === user.id);
-   // console.log('userToModify1', userToModify.rooms.length);
-   (userToModify.rooms === undefined || userToModify.rooms?.length === 0) ?  userToModify.rooms = [roomFormData] : userToModify.rooms.push(roomFormData);
-    //console.log('userToModify2', userToModify);
-    //console.log('userOwner', userOwner);
-    //    userOwner.userArray = user;
-    
-    modifyUser(userToModify);
-   // console.log('userOwner', userOwner);
-   addLoggedUser(userToModify);
-
-
-    //user.rooms = 
-    //TEST
-}
+        
+    const redirect = () => {
+        const userToModify = userOwner.find(userArray => userArray.id === user.id);
+    (userToModify.rooms === undefined || userToModify.rooms?.length === 0) ?  userToModify.rooms = [roomFormData] : userToModify.rooms.push(roomFormData);
+        
+        modifyUser(userToModify);
+        addLoggedUser(userToModify);
+        navigation.goBack();
+    }
     
   
     return (
@@ -109,7 +76,7 @@ const redirect = () => {
                style={styles.input}
                value={roomFormData.name}
                onChangeText={(value) => handleInputChange(RoomObjectConst.NAME, value)}
-               placeholder={'NOMBRE DE SALA *'}
+               placeholder={'NOMBRE DE SALA*'}
                placeholderTextColor={'rgb(102, 102, 102)'}
                keyboardType={'default'}
                maxlength={300}
@@ -119,7 +86,7 @@ const redirect = () => {
                style={styles.input}
                value={roomFormData.adress}
                onChangeText={(value) => handleInputChange(RoomObjectConst.ADRESS, value)}
-               placeholder={'DIRECCIÓN *'}
+               placeholder={'DIRECCIÓN*'}
                placeholderTextColor={'rgb(102, 102, 102)'}
                keyboardType={'default'}
                maxlength={300}
@@ -129,7 +96,7 @@ const redirect = () => {
                style={styles.input}
                value={roomFormData.description}
                onChangeText={(value) => handleInputChange(RoomObjectConst.DESCRIPTION, value)}
-               placeholder={'DESCRIPCION *'}
+               placeholder={'DESCRIPCION*'}
                placeholderTextColor={'rgb(102, 102, 102)'}
                keyboardType={'default'}
                maxlength={300}
@@ -139,7 +106,7 @@ const redirect = () => {
                style={styles.input}
                value={roomFormData.availability}
                 onChangeText={(value) => handleInputChange(RoomObjectConst.AVAILABILITY, value)}
-               placeholder={'DISPONIBILIDAD *'}
+               placeholder={'DISPONIBILIDAD*'}
                placeholderTextColor={'rgb(102, 102, 102)'}
                keyboardType={'default'}
                maxlength={300}
@@ -159,9 +126,9 @@ const redirect = () => {
                style={styles.input}
                value={roomFormData.price}
                 onChangeText={(value) => handleInputChange(RoomObjectConst.PRICE, value)}
-               placeholder={'PRECIO *'}
+               placeholder={'PRECIO*'}
                placeholderTextColor={'rgb(102, 102, 102)'}
-               keyboardType={'default'}
+               keyboardType={'number-pad'}
                maxlength={300}
             >
             </TextInput>
