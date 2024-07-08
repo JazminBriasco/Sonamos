@@ -24,9 +24,7 @@ const App = () => {
   const Stack = createNativeStackNavigator();
   const BottomTabs = createBottomTabNavigator();
   
-  console.log('APP');
-  console.log(store.getState());
-  
+//  console.log(store.getState());
   
   function OverviewScreen() {
     return (

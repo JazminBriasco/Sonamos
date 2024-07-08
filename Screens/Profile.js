@@ -18,7 +18,7 @@ const Profile = ({loggedUser, getLoggedUser}) => {
     };
     
     //if(user?.name === undefined || user === null) fetchData();
-    console.log('usdfser', loggedUser.rooms);
+    //console.log('usdfser', loggedUser.rooms);
   }, [getLoggedUser]);
 
   useEffect(() => {
@@ -26,7 +26,6 @@ const Profile = ({loggedUser, getLoggedUser}) => {
   }, [loggedUser]);
 
   return (
-    <ScrollView>
       <View style={styles.container}>
         <Text style={styles.header}>¡Hola {user?.name}!</Text>
         <Text style={styles.text}>Aquí se encontrarían tus salas y las opciones de administrador</Text>
@@ -46,11 +45,10 @@ const Profile = ({loggedUser, getLoggedUser}) => {
         <Text >Tus reservas</Text>
         <Text >Tus reservas</Text>
         <Text >Tus reservas</Text>
-        <Button title='Agregar sala' onPress={() => navigation.navigate(PagesConst.ADDROOM, { user: user })}></Button>
+        <Button title='Agregar sala' onPress={() => navigation.navigate(PagesConst.ADDROOM, { user: user, loggedUser: loggedUser })}></Button>
         <Button title='Modificar perfil'></Button>
         <Button title='Ver estadísticas (Salas reservadas, dinero ganado, pago realizado, mercado pago)'></Button>
       </View>
-      </ScrollView>
   );
 };
 

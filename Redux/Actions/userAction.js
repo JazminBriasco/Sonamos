@@ -67,12 +67,12 @@ const setUser = async (userToSign) => {
     try{
         if(userToSign !== undefined) return await AsyncStorage.setItem('userLogged', JSON.stringify(userToSign));
     }catch(error){
-        console.log('error', error);
+        //console.log('error', error);
     }
 };
 
 function addLoggedUser( user ) {
-    console.log(user);
+    //console.log(user);
     return (dispatch) => {
         return setUser(user).then(res => {
             dispatch({ type: ReduxUserOwnerAction.SET_USER_LOGGED, payload: user})

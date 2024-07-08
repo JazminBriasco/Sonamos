@@ -96,7 +96,7 @@ const OwnerRegister = ({addUser, getAllUsers, userOwner}) => {
                 style={styles.input}
                 placeholder='12345'
                 placeholderTextColor={'rgb(102, 102, 102)'}
-                keyboardType='default'
+                keyboardType='number-pad'
                 maxlength={20}
                 secureTextEntry={true}
                 value={registerData.password}

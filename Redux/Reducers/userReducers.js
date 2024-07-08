@@ -56,7 +56,7 @@ const userOwnerReducer = (state = initialState, action) => {
             }
 
         case ReduxUserOwnerAction.GET_USER_LOGGED_FAILURE:
-            console.log('payload GET FAIL: ', action.payload);
+          //  console.log('payload GET FAIL: ', action.payload);
             return { 
             ...state, 
             error: action.error

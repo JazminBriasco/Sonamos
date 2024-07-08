@@ -12,7 +12,6 @@ const Rooms = ({ loggedUser, addLoggedUser}) => {
   
   const navigation = useNavigation();
 
-  console.log('ROOMS');
 
   const exit = () => {
     addLoggedUser(undefined);

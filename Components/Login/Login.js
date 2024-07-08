@@ -43,7 +43,7 @@ const Login = ({getAllUsers, userOwner, addLoggedUser, getLoggedUser}) => {
         try {
             if (isFormValid) {
                 //await AsyncStorage.setItem('userLogged', JSON.stringify({}));
-                console.log('userToSign', userToSign);
+              //  console.log('userToSign', userToSign);
                 addLoggedUser(userToSign);
                 //console.log('getLoggedUser: ', getLoggedUser());
                 navigation.navigate(PagesConst.SONAMOS);
@@ -73,7 +73,7 @@ const Login = ({getAllUsers, userOwner, addLoggedUser, getLoggedUser}) => {
                 style={styles.input}
                 placeholder='12345'
                 placeholderTextColor={'rgb(102, 102, 102)'}
-                keyboardType='default'
+                keyboardType='number-pad'
                 maxlength={20}
                 secureTextEntry={true}
                 value={registerData.password}

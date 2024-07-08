@@ -1,9 +1,8 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TypeCard } from "../Const/_const";
 
 const Card = ({type, item}) => {
-    console.log('tem', item)
     if(type === TypeCard.CARDMYROOM){
     return (
         <View style={styles.containerCard}>
@@ -15,7 +14,13 @@ const Card = ({type, item}) => {
                 <Text>{item.adress} </Text>
                 <Text>{item.description} </Text>
                 <Text>{item.availability}</Text>
-                <Text>{item.gallery}</Text>
+                
+                <View style={styles.imageContainer}>
+                    {item.gallery ? item.gallery.map((uri, index) => (
+                        <Image key={index} source={{ uri }} style={styles.image} />
+                    )) : ''}
+                </View>
+
             </View>
         </View>
     )}
@@ -39,6 +44,17 @@ const styles = StyleSheet.create({
         padding: 6,
         borderRadius: 5,
     },
-    
+    imageContainer: {
+        marginBottom: 10,
+        flexDirection: 'row',
+        alignItems:'center',
+        width:50
+    },
+    image: {
+        marginTop: 5,
+        width: 80,
+        borderRadius: 5,
+        height: 50,
+      },
 });
 export default Card;
