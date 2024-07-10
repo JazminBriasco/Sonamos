@@ -1,12 +1,13 @@
-import { Button, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Button, FlatList, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS, FONTSIZE } from '../Const/_styles';
-import { PagesConst } from '../Const/_const';
+import { PagesConst, TypeCard } from '../Const/_const';
 import { useEffect, useState } from 'react';
 import { UserActions } from '../Redux/Actions/userAction';
 import { connect } from 'react-redux';
 import RoomDetail from './RoomDetail';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Card from '../Components/Card';
 
 const Rooms = ({ loggedUser, addLoggedUser}) => {
   
@@ -24,62 +25,41 @@ const Rooms = ({ loggedUser, addLoggedUser}) => {
   }),[loggedUser];
 
     return (
+      <>
       <ScrollView>
-      <View style= {styles.container}>
-        <View style={styles.order}>
-          <Text style={styles.header}>Salas disponibles</Text>
-          <Button title={'AZ↑↓'} color={COLORS.red}></Button>
-          <Button title={'X'} color={COLORS.red} onPress={exit} ></Button>
+        <View style= {styles.container}>
+          <View style={styles.order}>
+            <Text style={styles.header}>Salas disponibles</Text>
+            <Button title={'AZ↑↓'} color={COLORS.red}></Button>
+            <Button title={'X'} color={COLORS.red} onPress={exit} ></Button>
+          </View>
+          <View style={styles.filterContainer}>
+            <Text style={styles.subHeader}>Buscar por zona</Text>
+            <Text style={styles.subHeader}>Buscar por fecha</Text>
+          </View>
+
+          <View style={styles.roomContainer}>
+            <Pressable style={({ pressed }) => [styles.rooms, pressed && styles.pressedRoom]} onPress={() => navigation.navigate(PagesConst.ROOMDETAIL)}>
+              <View style={styles.order}>
+                <Text style={styles.subHeader}>Santiago del Estero 1234</Text>
+                <Text>$8000</Text>
+              </View>
+              <Text>Cuenta con muchas cositas, Cuenta con muchas cositas, Cuenta con muchas cositas, Cuenta con muchas cositas,Cuenta.</Text>
+            </Pressable>          
+          </View>
         </View>
-        <View style={styles.filterContainer}>
-          <Text style={styles.subHeader}>Buscar por zona</Text>
-          <Text style={styles.subHeader}>Buscar por fecha</Text>
-        </View>
-        <View style={styles.roomContainer}>
-
-
-
-          <Pressable style={({ pressed }) => [styles.rooms, pressed && styles.pressedRoom]} onPress={() => navigation.navigate(PagesConst.ROOMDETAIL)}>
-            <View style={styles.order}>
-              <Text style={styles.subHeader}>Santiago del Estero 1234</Text>
-              <Text>$8000</Text>
-            </View>
-            <Text>Cuenta con muchas cositas, Cuenta con muchas cositas, Cuenta con muchas cositas, Cuenta con muchas cositas,Cuenta.</Text>
-          </Pressable>          
-          <Pressable style={({ pressed }) => [styles.rooms, pressed && styles.pressedRoom]}>
-            <View style={styles.order}>
-              <Text style={styles.subHeader}>Santiago del Estero 1234</Text>
-              <Text>$8000</Text>
-            </View>
-            <Text>Cuenta con muchas cositas, Cuenta con muchas cositas, Cuenta con muchas cositas, Cuenta con muchas cositas,Cuenta.</Text>
-          </Pressable>       
-          <Pressable style={({ pressed }) => [styles.rooms, pressed && styles.pressedRoom]}>
-            <View style={styles.order}>
-              <Text style={styles.subHeader}>Santiago del Estero 1234</Text>
-              <Text>$8000</Text>
-            </View>
-            <Text>Cuenta con muchas cositas, Cuenta con muchas cositas, Cuenta con muchas cositas, Cuenta con muchas cositas,Cuenta.</Text>
-          </Pressable>       
-          <Pressable style={({ pressed }) => [styles.rooms, pressed && styles.pressedRoom]}>
-            <View style={styles.order}>
-              <Text style={styles.subHeader}>Santiago del Estero 1234</Text>
-              <Text>$8000</Text>
-            </View>
-            <Text>Cuenta con muchas cositas, Cuenta con muchas cositas, Cuenta con muchas cositas, Cuenta con muchas cositas,Cuenta.</Text>
-          </Pressable>       
-          <Pressable style={({ pressed }) => [styles.rooms, pressed && styles.pressedRoom]}>
-            <View style={styles.order}>
-              <Text style={styles.subHeader}>Santiago del Estero 1234</Text>
-              <Text>$8000</Text>
-            </View>
-            <Text>Cuenta con muchas cositas, Cuenta con muchas cositas, Cuenta con muchas cositas, Cuenta con muchas cositas,Cuenta.</Text>
-          </Pressable>       
-
-          
-
-        </View>
-      </View>
       </ScrollView>
+      <View style= {styles.container}>
+
+          <FlatList
+          data={loggedUser.rooms}
+          renderItem={({ item }) => 
+          <Card type={TypeCard.CARDALLROOMS} item={item}></Card>
+          }
+          keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
+          />
+        </View>
+      </>
     );
   };
   

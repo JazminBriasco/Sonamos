@@ -53,5 +53,6 @@ export const ReduxUserOwnerAction = {
 }
 
 export const TypeCard = {
-    CARDMYROOM: 'CARDMYROOM'
+    CARDMYROOM: 'CARDMYROOM',
+    CARDALLROOMS: 'CARDALLROOMS'
 }

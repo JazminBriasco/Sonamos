@@ -18,11 +18,9 @@ const Profile = ({loggedUser, getLoggedUser}) => {
     };
     
     //if(user?.name === undefined || user === null) fetchData();
-    //console.log('usdfser', loggedUser.rooms);
   }, [getLoggedUser]);
 
   useEffect(() => {
-    console.log(loggedUser);
     if(user?.name === undefined || user === null) setUser(loggedUser);
   }, [loggedUser]);
 
@@ -38,7 +36,7 @@ const Profile = ({loggedUser, getLoggedUser}) => {
           <FlatList
                 data={loggedUser.rooms}
                 renderItem={({ item }) => 
-               <Card type={TypeCard.CARDMYROOM} item={item}></Card>
+                <Card type={TypeCard.CARDMYROOM} item={item}></Card>
               }
                 keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
                 />

@@ -18,6 +18,7 @@ import { connect } from "react-redux";
 import { Room } from "../Class/Room";
 import * as ImagePicker from "expo-image-picker";
 import { useCameraPermissions } from "expo-camera";
+import { Calendar, CalendarList, Agenda  } from "react-native-calendars";
 
 const AddRoom = ({ getAllUsers, userOwner, modifyUser, addLoggedUser }) => {
   const route = useRoute();
@@ -25,22 +26,24 @@ const AddRoom = ({ getAllUsers, userOwner, modifyUser, addLoggedUser }) => {
   const loggedUser = route.params.loggedUser;
   const navigation = useNavigation();
   const initialValues = new Room(
-    (name = ""),
-    (adress = ""),
-    (description = ""),
-    (gallery = ""),
-    (availability = ""),
-    (price = "")
+    name = "",
+    adress = "",
+    description = "",
+    gallery = "",
+    availability = "",
+    price = "",
+    disabled= false
   );
 
   const [roomFormData, setRoomFormData] = useState(initialValues);
   const [isFormValid, setIsFormValid] = useState(true);
-  const [image, setImage] = useState([]);
   const [images, setImages] = useState([]);
+  const [calendarVisibility, setCalendarVisibility] = useState(false);
+  const [selectedDates, setSelectedDates] = useState({});
 
   useEffect(() => {
     getAllUsers();
-    setImage()
+    //setImage() //ver esto si las img funcionan mal
   }, [userOwner]);
 
   const pickImage = async () => {
@@ -70,28 +73,41 @@ const AddRoom = ({ getAllUsers, userOwner, modifyUser, addLoggedUser }) => {
       setRoomFormData({ ...roomFormData, adress: value });
     key === RoomObjectConst.DESCRIPTION &&
       setRoomFormData({ ...roomFormData, description: value });
-    key === RoomObjectConst.AVAILABILITY &&
-      setRoomFormData({ ...roomFormData, availability: value });
+   /* key === RoomObjectConst.AVAILABILITY &&
+      setRoomFormData({ ...roomFormData, availability: value });*/
     key === RoomObjectConst.PRICE &&
       setRoomFormData({ ...roomFormData, price: value });
   };
 
   const checkNewRoom = () => {
-    console.log(roomFormData.gallery.length);
+  
     if (
       roomFormData.name.length >= 1 &&
       roomFormData.adress.length >= 2 &&
       roomFormData.description.length >= 2 &&
       roomFormData.availability.length >= 2 &&
-      roomFormData.price.length >= 2 &&
-      roomFormData.gallery.length >= 1
+      roomFormData.price.length >= 2 
     ) {
-      setIsFormValid(true);
-      redirect();
+      confirmNewRoom();
     } else {
       setIsFormValid(false);
     }
   };
+  
+  const confirmNewRoom = () => {
+    Alert.alert(
+      'Por favor verifique los datos:', 
+      `Nombre: ${roomFormData.name}\n` +
+      `Dirección: ${roomFormData.adress}\n` +
+      `Descripción: ${roomFormData.description}\n` +
+      `Rango de disponibilidad: ${roomFormData.availability}\n` +
+      `Tarifa: ${roomFormData.price}\n`,
+      [{text: 'SI', style: 'destructive', onPress:() => {
+        setIsFormValid(true);
+        redirect();
+      }}, 
+      {text: 'NO', style: 'cancel'}]); 
+  }
 
   const redirect = () => {
     const userToModify = userOwner.find(
@@ -105,6 +121,59 @@ const AddRoom = ({ getAllUsers, userOwner, modifyUser, addLoggedUser }) => {
     addLoggedUser(userToModify);
     navigation.goBack();
   };
+
+  const openHideCalendar = () => {
+    setCalendarVisibility(!calendarVisibility); // Cambia el estado de visibilidad del calendario
+  };
+
+
+
+  const handleDateSelect = (day) => {
+    let updatedSelectedDates = { ...selectedDates };
+    const selectedDatesCount = Object.keys(updatedSelectedDates).length;
+  
+    if (selectedDatesCount === 0) {
+      updatedSelectedDates[day.dateString] = { selected: true, selectedColor: 'blue' };
+    } else if (selectedDatesCount === 1) {
+      updatedSelectedDates[day.dateString] = { selected: true, selectedColor: 'blue' };
+  
+      const [startDate, endDate] = Object.keys(updatedSelectedDates);
+      const startTimestamp = new Date(startDate).getTime();
+      const endTimestamp = new Date(endDate).getTime();
+      const datesInRange = {};
+      
+      for (let timestamp = startTimestamp + 24 * 60 * 60 * 1000; timestamp < endTimestamp; timestamp += 24 * 60 * 60 * 1000) {
+        const date = new Date(timestamp);
+        const dateString = date.toISOString().split('T')[0];
+        datesInRange[dateString] = { selected: true, selectedColor: 'blue' };
+      }
+
+      updatedSelectedDates = { ...updatedSelectedDates, ...datesInRange };
+    } else {
+      updatedSelectedDates = {};
+    }
+  
+    const firstSelectedDate = Object.keys(updatedSelectedDates)[0];
+    const filteredDates = {};
+    Object.keys(updatedSelectedDates).forEach((date) => {
+      if (new Date(date) >= new Date(firstSelectedDate)) filteredDates[date] = updatedSelectedDates[date];
+    });
+
+    setSelectedDates(filteredDates);
+    
+    const filteredDatesArray = Object.keys(filteredDates);
+    if(filteredDatesArray.length > 0){
+      const filteredDatesRange = [filteredDatesArray[0], filteredDatesArray[filteredDatesArray.length -1]];
+      setRoomFormData({ ...roomFormData, availability: filteredDatesRange });
+    }
+  };
+
+  const disabledDates = {};
+  Object.keys(selectedDates).forEach((date) => {
+    if (new Date(date) < new Date(Object.keys(selectedDates)[0])) {
+      disabledDates[date] = { disabled: true, disableTouchEvent: true, inactiveColor: '#cccccc' };
+    }
+  });
 
   return (
     <ScrollView>
@@ -143,32 +212,34 @@ const AddRoom = ({ getAllUsers, userOwner, modifyUser, addLoggedUser }) => {
           keyboardType={"default"}
           maxlength={300}
         ></TextInput>
-        <TextInput
-          style={styles.input}
-          value={roomFormData.availability}
-          onChangeText={(value) =>
-            handleInputChange(RoomObjectConst.AVAILABILITY, value)
-          }
-          placeholder={"DISPONIBILIDAD*"}
-          placeholderTextColor={"rgb(102, 102, 102)"}
-          keyboardType={"default"}
-          maxlength={300}
-        ></TextInput>
+        <Pressable onPress={openHideCalendar} style={styles.input}>
+          <Text style={styles.placeholder}>DISPONIBILIDAD*</Text>
+        </Pressable>
+        
+        {calendarVisibility && 
+          <View style={styles.calendarContainer}>
+            <Calendar
+              onDayPress={handleDateSelect}
+              markedDates={{ ...selectedDates, ...disabledDates }}            />
+          </View>
+        }
+
         <Pressable onPress={pickImage} style={styles.input}>
-          <Text style={styles.placeholder}>FOTOS*</Text>
+          <Text style={styles.placeholder}>FOTOS</Text>
         </Pressable>
         <View style={styles.imageContainer}>
-        {images!== null && images.map((uri, index) => (
-          <Image key={index} source={{ uri }} style={styles.image} />
-        ))}
+            {images!== null && images.map((uri, index) => (
+            <Image key={index} source={{ uri }} style={styles.image} />
+            ))}
         </View>
+       
         <TextInput
           style={styles.input}
           value={roomFormData.price}
           onChangeText={(value) =>
             handleInputChange(RoomObjectConst.PRICE, value)
           }
-          placeholder={"PRECIO*"}
+          placeholder={"PRECIO POR HORA*"}
           placeholderTextColor={"rgb(102, 102, 102)"}
           keyboardType={"number-pad"}
           maxlength={300}
@@ -230,6 +301,9 @@ image: {
     borderRadius: 5,
     height: 50,
   },
+  calendarContainer: {
+}
+
 });
 
 const mapStateToProps = (state) => ({

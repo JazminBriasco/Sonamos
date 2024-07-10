@@ -32,3 +32,11 @@ export async function modifyUserHTTP( user ) {
         throw error; 
   }
 }
+
+export async function getAllRoomsHTTP( ) {
+    //Get todas las salas
+}
+
+export async function setAllRoomsHTTP( ) {
+    //Al crear sala se agrega a otro endpoint a demás del owner
+}
