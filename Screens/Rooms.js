@@ -10,46 +10,55 @@ import { useNavigation } from '@react-navigation/native';
 const Rooms = ({ userOwner, loggedUser}) => {
   console.log('ROOMS');
   const [rooms, setRooms] = useState([]);
-  const [itemOwner, setItemOwner] = useState('DUENO');
+  const [flagOrder, setFlagOrder] = useState(true);
   const navigation = useNavigation();
 
   useEffect(() => {
     //getAllUsers();
     if (loggedUser === undefined) navigation.navigate(PagesConst.LOGIN);
-    const roomArray = userOwner.map(user => user.rooms).flat();
-    setRooms(roomArray);
-    
-    console.log('Users: ', userOwner);
-    userOwner.forEach(element => {
-      console.log(element.name);
-    });;
+    setRooms(userOwner);
   }, [userOwner]);
 
   const renderItem = ({ item }) => (
       <FlatList
         data={item.rooms}
         renderItem={({ item: room }) => (
-          <Card type={TypeCard.CARDALLROOMS} item={room} itemOwner = {item}></Card>
+          <Card type={TypeCard.CARDALLROOMS} item={room} itemOwner = {item} ></Card>
         )}
         keyExtractor={(room) => room.id} 
       />
   );
 
-    return (
+  const sortByName = (a, b) => {
+    return a.name.localeCompare(b.name);
+  };
 
+  const orderByName = () => {
+    if (flagOrder){
+      let newRoomArrayA = userOwner.sort((a, b) => b.name.localeCompare(a.name));
+      setRooms(newRoomArrayA);
+      setFlagOrder(false);
+    } else {
+      let newRoomArrayB = userOwner.sort((a, b) => a.name.localeCompare(b.name));
+      setRooms(newRoomArrayB);
+      setFlagOrder(true);
+    }
+  }
+
+    return (
         <View style= {styles.container}>
-          <View style={styles.order}>
             <Text style={styles.header}>Salas disponibles:</Text>
-            <Button title={'AZ↑↓'} color={COLORS.red}></Button>
-          </View>
-          <View style={styles.filterContainer}>
+           {/* <Button title={'AZ↑↓'} color={COLORS.red} onPress={orderByName}></Button>*/}
+         {/*  <View style={styles.filterContainer}>
             <Text style={styles.subHeader}>Buscar por zona</Text>
             <Text style={styles.subHeader}>Buscar por fecha</Text>
+          </View>*/}
+          <View style={styles.roomList}>
+            <FlatList
+              data={rooms}
+              renderItem={renderItem} 
+            />
           </View>
-          <FlatList
-            data={userOwner}
-            renderItem={renderItem} 
-          />
         </View>
     );
   };
@@ -57,7 +66,8 @@ const Rooms = ({ userOwner, loggedUser}) => {
   const styles = StyleSheet.create({
     container:{
       flex:1,
-      marginHorizontal:10
+      marginHorizontal:10,
+      marginVertical:20
     },
     order: {
       flexDirection: 'row',
@@ -85,8 +95,9 @@ const Rooms = ({ userOwner, loggedUser}) => {
       borderWidth: 1,
       borderRadius: 5
     },
-    pressedRoom: {
-      backgroundColor: COLORS.pressed,
+    roomList: {
+      marginVertical:20,
+      marginHorizontal:3
     }
     
   });

@@ -1,8 +1,9 @@
-import { Alert, Image, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { TypeCard } from "../Const/_const";
 import { UserActions } from "../Redux/Actions/userAction";
 import { connect } from "react-redux";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { COLORS } from "../Const/_styles";
 
 const Card = ({type, item, getLoggedUser, itemOwner}) => {
     console.log('Card');
@@ -26,13 +27,14 @@ const Card = ({type, item, getLoggedUser, itemOwner}) => {
     const handleReservePress = () => {
         Alert.alert(
             '¿Reservar?', 
-            '', 
+            `La sala a reservar es ${item.name} perteneciente a ${itemOwner.name}`, 
             [{text: '¡SI!', style: 'destructive', onPress: reserveRoom}, {text: 'NO', style: 'cancel'}]
         );
     }
     
     if(type === TypeCard.CARDMYROOM){
         return (
+       
             <View style={styles.containerCard}>
                 <View>
                 <View style={styles.containerHeader}>
@@ -57,20 +59,24 @@ const Card = ({type, item, getLoggedUser, itemOwner}) => {
     if(type === TypeCard.CARDALLROOMS){
         return (
             <View style={styles.containerCard}>
-                <View style={styles.containerHeader}>
-                        <Text>{item.name.toUpperCase()}</Text>
-                        <Text>${item.price} <MaterialCommunityIcons name="hand-front-left" size={18} color="#000" onPress={handleReservePress}/></Text>
-                    </View>
-                    <View style={styles.bodyCard}>
-                        <Text>{item.adress} </Text>
-                        <Text>{item.description} </Text>
-                        <Text>Disponible del {item.availability[0]} al {item.availability[1]}</Text>
-                        <View style={styles.imageContainer}>
-                            {item.gallery ? item.gallery.map((uri, index) => (
-                                <Image key={index} source={{ uri }} style={styles.image} />
-                            )) : ''}
+                <Pressable style={({pressed}) => pressed && styles.pressedCard}>
+                    <View>
+                        <View style={styles.containerHeader}>
+                            <Text>{item.name.toUpperCase()}</Text>
+                            <Text>${item.price} <MaterialCommunityIcons name="hand-front-left" size={18} color="#000" onPress={handleReservePress}/></Text>
+                        </View>
+                        <View style={styles.bodyCard}>
+                            <Text>{item.adress} </Text>
+                            <Text>{item.description} </Text>
+                            <Text>Disponible del {item.availability[0]} al {item.availability[1]}</Text>
+                            <View style={styles.imageContainer}>
+                                {item.gallery ? item.gallery.map((uri, index) => (
+                                    <Image key={index} source={{ uri }} style={styles.image} />
+                                )) : ''}
+                            </View>
                         </View>
                     </View>
+                </Pressable>
             </View>
         )}
 }
@@ -108,13 +114,16 @@ const styles = StyleSheet.create({
         borderBlockColor: 'black',
         height: 50,
       },
+      pressedCard: {
+        backgroundColor: COLORS.pressed,
+      },
     disabledContainer: {
         backgroundColor: '#e2e2e2',
         borderRadius: 5,
     },
     disabledHeader: {
         color: '#6c757d'
-    }
+    },
 });
 
 const mapStateToProps = (state) => ({
