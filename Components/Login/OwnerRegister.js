@@ -8,6 +8,7 @@ import { User } from '../../Class/User';
 import { useNavigation } from '@react-navigation/native';
 
 const OwnerRegister = ({addUser, getAllUsers, userOwner}) => {
+    console.log('OwnerRegister');
 
     const initialValues = new User('','','','','');
     const navigation = useNavigation();

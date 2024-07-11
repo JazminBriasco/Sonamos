@@ -3,7 +3,8 @@ import { ReduxUserOwnerAction } from "../../Const/_const";
 const initialState = {
     userOwners: [],
     loggedUser: undefined,
-    error: null
+    error: null,
+    allRooms: []
 }
 
 const userOwnerReducer = (state = initialState, action) => {
@@ -14,7 +15,6 @@ const userOwnerReducer = (state = initialState, action) => {
                 userOwners: [...state.userOwners, action.payload],
                 error:null
             }
-        
         case ReduxUserOwnerAction.ADD_USEROWNER_FAILURE:
             return {
                 ...state,
@@ -27,8 +27,33 @@ const userOwnerReducer = (state = initialState, action) => {
                 userOwners: action.payload,
                 error: null
             }
-
         case ReduxUserOwnerAction.GET_USEROWNERS_FAILURE:
+            return {
+                ...state,
+                error: action.payload
+            }
+
+        case ReduxUserOwnerAction.ADD_ALL_ROOMS:
+            console.log('ADD_ALL_ROOMS action', action);
+          //  console.log('ADD_ALL_ROOMS payload', action.payload);
+           // console.log('ADD_ALL_ROOMS state', state);
+            return {
+                ...state,
+                allRooms: [...state.allRooms, action.payload],
+                error:null
+            }
+       
+        case ReduxUserOwnerAction.GET_ROOMS:
+            console.log('allRooms - ReduxUserOwnerAction', state);
+           // console.log('allRooms - ReduxUserOwnerAction', action);
+            return { 
+                ...state, 
+                allRooms: action.payload,
+                error: null
+            }
+
+        case ReduxUserOwnerAction.GET_ROOMS_FAILURE:
+            console.log('allRooms - ReduxUserOwnerActionFAIL', action.payload);
         return {
             ...state,
             error: action.payload

@@ -1,11 +1,18 @@
 import { Alert, Image, StyleSheet, Text, View } from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TypeCard } from "../Const/_const";
+import { UserActions } from "../Redux/Actions/userAction";
+import { connect } from "react-redux";
 
-const Card = ({type, item}) => {
+const Card = ({type, item, getLoggedUser, itemOwner}) => {
+    console.log('Card');
 
     const editRoom = () => {
         console.log('EDIT');
+    }
+
+    const reserveRoom = () => {
+        console.log('RESERVE');
     }
 
     const handleIconPress = () => {
@@ -15,11 +22,18 @@ const Card = ({type, item}) => {
             [{text: 'SI', style: 'destructive', onPress: editRoom}, {text: 'NO', style: 'cancel'}]
         );
     }
+
+    const handleReservePress = () => {
+        Alert.alert(
+            '¿Reservar?', 
+            '', 
+            [{text: '¡SI!', style: 'destructive', onPress: reserveRoom}, {text: 'NO', style: 'cancel'}]
+        );
+    }
     
     if(type === TypeCard.CARDMYROOM){
         return (
             <View style={styles.containerCard}>
-            {item.disabled === false ?
                 <View>
                 <View style={styles.containerHeader}>
                     <Text>{item?.name?.toUpperCase()}<MaterialCommunityIcons name="square-edit-outline" size={18} color="#000" onPress={handleIconPress}/></Text>
@@ -37,20 +51,15 @@ const Card = ({type, item}) => {
                     </View>
                     </View>
                 </View>
-            : 
-            <View style={styles.disabledContainer}>
-                <Text style={styles.disabledHeader}>{item?.name?.toUpperCase()}</Text>
-            </View>
-            }
             </View>
         )
     }
     if(type === TypeCard.CARDALLROOMS){
         return (
             <View style={styles.containerCard}>
-                    <View style={styles.containerHeader}>
-                        <Text>{item?.name?.toUpperCase()}<MaterialCommunityIcons name="square-edit-outline" size={18} color="#000" onPress={handleIconPress}/></Text>
-                        <Text>${item.price} </Text>
+                <View style={styles.containerHeader}>
+                        <Text>{item.name.toUpperCase()}, {itemOwner}</Text>
+                        <Text>${item.price} <MaterialCommunityIcons name="hand-front-left" size={18} color="#000" onPress={handleReservePress}/></Text>
                     </View>
                     <View style={styles.bodyCard}>
                         <Text>{item.adress} </Text>
@@ -65,6 +74,7 @@ const Card = ({type, item}) => {
             </View>
         )}
 }
+
 
 const styles = StyleSheet.create({
     containerCard: {
@@ -106,4 +116,13 @@ const styles = StyleSheet.create({
         color: '#6c757d'
     }
 });
-export default Card;
+
+const mapStateToProps = (state) => ({
+
+  });
+  
+  const mapDispatchToProps = {
+
+  };
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(Card);

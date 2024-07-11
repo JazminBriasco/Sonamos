@@ -1,6 +1,6 @@
 import { User } from "../../Class/User";
-import { ReduxUserOwnerAction } from "../../Const/_const";
-import { addUserHTTP, getUserHTTP, modifyUserHTTP } from "../../http/httpOwnerUser";
+import { ReduxUserOwnerAction, UserObjectConst } from "../../Const/_const";
+import { addUserHTTP, getAllRoomsHTTP, getUserHTTP, modifyUserHTTP } from "../../http/httpOwnerUser";
 import  AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const UserActions = {
@@ -9,6 +9,7 @@ export const UserActions = {
     addLoggedUser,
     getLoggedUser,
     modifyUser,
+    getAllRooms
 }
 
 function addUser( user ) {
@@ -24,12 +25,14 @@ function addUser( user ) {
     }
 }
 
-function modifyUser (user) {
-   // console.log('userAction', user);
+function modifyUser (user, type = '') {
+    type = '';
     return(dispatch) => {
-        return modifyUserHTTP(user).then(res => {
-       //     console.log('res', res.config.data);
-            dispatch({type: ReduxUserOwnerAction.MODIFY_USER, payload: res.config.data})
+        return modifyUserHTTP(user, type).then(res => {
+            console.log('res 1', res);
+            console.log('res', res.config.data);
+            dispatch({type: ReduxUserOwnerAction.MODIFY_USER, payload: res.config.data.rooms});
+            if (type === UserObjectConst.ROOMS) dispatch({type: ReduxUserOwnerAction.ADD_ALL_ROOMS, payload: res.config.data});
         })
         .catch(error => {
             dispatch({ type: ReduxUserOwnerAction.MODIFY_USER_FAILURE, payload: error });
@@ -44,6 +47,17 @@ function getAllUsers() {
         })
         .catch(error => {
             dispatch({type: ReduxUserOwnerAction.GET_USEROWNERS_FAILURE, payload: error})
+        })
+    }
+}
+
+function getAllRooms() {
+    return (dispatch) => {
+        return getAllRoomsHTTP().then(res => {
+            dispatch({ type: ReduxUserOwnerAction.GET_ROOMS, payload: res})
+        })
+        .catch(error => {
+            dispatch({type: ReduxUserOwnerAction.GET_ROOMS_FAILURE, payload: error})
         })
     }
 }
@@ -72,9 +86,9 @@ const setUser = async (userToSign) => {
 };
 
 function addLoggedUser( user ) {
-    //console.log(user);
     return (dispatch) => {
         return setUser(user).then(res => {
+            //console.log('USER ACTION', user);
             dispatch({ type: ReduxUserOwnerAction.SET_USER_LOGGED, payload: user})
         })
         .catch(error => {

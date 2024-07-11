@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { COLORS, FONTSIZE } from "../Const/_styles";
-import { PagesConst, RoomObjectConst } from "../Const/_const";
+import { PagesConst, RoomObjectConst, UserObjectConst } from "../Const/_const";
 import { useEffect, useState } from "react";
 import { UserActions } from "../Redux/Actions/userAction";
 import { connect } from "react-redux";
@@ -22,7 +22,7 @@ import { Calendar, CalendarList, Agenda  } from "react-native-calendars";
 
 const AddRoom = ({ getAllUsers, userOwner, modifyUser, addLoggedUser }) => {
   const route = useRoute();
-  const user = route.params.user;
+  console.log('ADD ROOM');
   const loggedUser = route.params.loggedUser;
   const navigation = useNavigation();
   const initialValues = new Room(
@@ -111,13 +111,13 @@ const AddRoom = ({ getAllUsers, userOwner, modifyUser, addLoggedUser }) => {
 
   const redirect = () => {
     const userToModify = userOwner.find(
-      (userArray) => userArray.id === user.id
+      (userArray) => userArray.id === loggedUser.id
     );
     userToModify?.rooms === undefined || userToModify?.rooms?.length === 0
       ? (userToModify.rooms = [roomFormData])
       : userToModify.rooms.push(roomFormData);
 
-    modifyUser(userToModify);
+    modifyUser(userToModify, UserObjectConst.ROOMS);
     addLoggedUser(userToModify);
     navigation.goBack();
   };

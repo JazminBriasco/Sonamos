@@ -3,56 +3,40 @@ import { COLORS, FONTSIZE } from '../../Const/_styles';
 import { UserActions } from '../../Redux/Actions/userAction';
 import { connect } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { PagesConst, UserObjectConst, UserTypeConst } from '../../Const/_const';
+import { PagesConst, UserObjectConst } from '../../Const/_const';
 import { useNavigation } from '@react-navigation/native';
-import  AsyncStorage from '@react-native-async-storage/async-storage';
-import { User } from '../../Class/User';
 
-const Login = ({getAllUsers, userOwner, addLoggedUser, getLoggedUser}) => {
+const Login = ({getAllUsers, userOwner, addLoggedUser}) => {
 
+    console.log('LOGIN');
     const [registerData, setRegisterData] = useState({});
-    const [isFormValid, setIsFormValid] = useState(false);
     const [invalidFormInfo, setInvalidFormInfo] = useState('');
-    const [userToSign, setUserToSign] = useState('');
-
     const navigation = useNavigation();
 
     useEffect(() => {
         getAllUsers();
-    }, [userOwner]); 
+        userOwner.forEach(element => {
+            console.log('all users ', element.name);
+        });
+        //addLoggedUser('');
+    }, []); 
     
     const handleInputChange = (key, value) => {
         setInvalidFormInfo('');
         key === UserObjectConst.CONTACTNUMBER && setRegisterData({ ...registerData, contactNumber: value });
         key === UserObjectConst.PASSWORD && setRegisterData({ ...registerData, password: value });
-    };
-
-    useEffect(() =>{
+    }; 
+    
+    const checkForm =() => {
         const checkUser = userOwner.find(user => user.contactNumber?.slice(3) === registerData.contactNumber);
+        console.log('user founded: ', checkUser.name);
+        
         if (checkUser && checkUser?.password?.toUpperCase() === registerData?.password?.toUpperCase()) {
-           // const user = new User(checkUser.id, checkUser.name, checkUser.contactNumber, checkUser.password, checkUser.mail, checkUser.isAdmin, checkUser.rooms);
-            setUserToSign(checkUser);
-            setIsFormValid(true);
-           // console.log(checkUser);
+            console.log('userToSign in loggedUser', checkUser.name);
+            addLoggedUser(checkUser);
+            navigation.navigate(PagesConst.SONAMOS);
         } else{ 
-            setIsFormValid(false);
-        }
-    }),[registerData];
-    
-    
-    const checkForm = async () => {
-        try {
-            if (isFormValid) {
-                //await AsyncStorage.setItem('userLogged', JSON.stringify({}));
-              //  console.log('userToSign', userToSign);
-                addLoggedUser(userToSign);
-                //console.log('getLoggedUser: ', userToSign);
-                navigation.navigate(PagesConst.SONAMOS);
-            } else {
-                setInvalidFormInfo('Usuario o contraseña incorrectos, por favor vuelva a intentarlo');
-            }
-        } catch(error) {
-            Alert.alert('Ups! Intente de nuevo', '', [{ text: "Cancel", style: "cancel" }]);
+            setInvalidFormInfo('Usuario o contraseña incorrectos, por favor vuelva a intentarlo');
         }
     }
 
@@ -119,7 +103,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToPtops = {
     getAllUsers: UserActions.getAllUsers,
     addLoggedUser: UserActions.addLoggedUser,
-    getLoggedUser: UserActions.getLoggedUser
+   // getLoggedUser: UserActions.getLoggedUser
 }
 
 export default connect(mapStateToProps, mapDispatchToPtops)(Login);

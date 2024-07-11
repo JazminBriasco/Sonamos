@@ -1,4 +1,5 @@
 import axios from "axios";
+import { PagesConst, UserObjectConst } from "../Const/_const";
 
 const URL = 'https://react-native-rock-default-rtdb.firebaseio.com';
 
@@ -23,20 +24,45 @@ export async function getUserHTTP() {
     return users;
 }
 
-export async function modifyUserHTTP( user ) {
+export async function modifyUserHTTP( user, type ) {
+    console.log('modifyUserHTTP ', type);
     const urlPut = URL + '/users/' + user.id + '.json';
+    const urlAdd = URL + '/rooms.json';
+    const newRoom = user.rooms[user.rooms.length -1];
     try {
+        if(type === UserObjectConst.ROOMS) {
+            const [modifyUserResponse, addRoomResponse] = await Promise.all([
+                axios.put(urlPut, user),
+                axios.post(urlAdd, newRoom)
+            ]);
+            //console.log('modifyUserResponse', modifyUserResponse);
+            return (modifyUserResponse);
+    } else {
         const res = await axios.put(urlPut, user); 
+        console.log('res', res);
         return (res);
+    }
     } catch (error) {
-        throw error; 
-  }
+        console.error('Error modifying user or adding room:', error);
+        throw new Error(`Failed to modify user with ID ${user.id} or add room: ${error.message}`);
+    }
 }
 
 export async function getAllRoomsHTTP( ) {
-    //Get todas las salas
+    const response =await axios.get( URL + '/rooms.json' );
+    const rooms = [];
+    for ( const key in response.data ) {
+        const userObject = {
+            name: response.data[key].name,
+            adress: response.data[key].adress,
+            description: response.data[key].description,
+            gallery: response.data[key].gallery,
+            availability: response.data[key].availability,
+            price: response.data[key].price,
+            disabled: response.data[key].disabled
+        }
+        rooms.push(userObject);
+    }
+    return rooms;
 }
 
-export async function setAllRoomsHTTP( ) {
-    //Al crear sala se agrega a otro endpoint a demás del owner
-}

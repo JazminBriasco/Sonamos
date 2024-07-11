@@ -1,70 +1,51 @@
-import { Button, FlatList, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { Button, FlatList, StyleSheet, Text, View } from 'react-native';
 import { COLORS, FONTSIZE } from '../Const/_styles';
 import { PagesConst, TypeCard } from '../Const/_const';
 import { useEffect, useState } from 'react';
 import { UserActions } from '../Redux/Actions/userAction';
 import { connect } from 'react-redux';
-import RoomDetail from './RoomDetail';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Card from '../Components/Card';
+import { useNavigation } from '@react-navigation/native';
 
-const Rooms = ({ loggedUser, addLoggedUser}) => {
-  
+const Rooms = ({ userOwner, loggedUser}) => {
+  console.log('ROOMS');
+  const [rooms, setRooms] = useState([]);
+  const [itemOwner, setItemOwner] = useState('DUEÑO');
   const navigation = useNavigation();
 
-
-  const exit = () => {
-    addLoggedUser(undefined);
-    AsyncStorage.removeItem('userLogged');
-    navigation.navigate(PagesConst.HOME)
-  }
-
   useEffect(() => {
-    loggedUser === undefined && navigation.navigate(PagesConst.HOME);
-  }),[loggedUser];
+    //getAllUsers();
+    if (loggedUser === undefined) navigation.navigate(PagesConst.LOGIN);
+    const roomArray = userOwner.map(user => user.rooms).flat();
+    setRooms(roomArray);
+  }, [userOwner]);
 
     return (
-      <>
-      <ScrollView>
+
         <View style= {styles.container}>
           <View style={styles.order}>
-            <Text style={styles.header}>Salas disponibles</Text>
+            <Text style={styles.header}>Salas disponibles:</Text>
             <Button title={'AZ↑↓'} color={COLORS.red}></Button>
-            <Button title={'X'} color={COLORS.red} onPress={exit} ></Button>
           </View>
           <View style={styles.filterContainer}>
             <Text style={styles.subHeader}>Buscar por zona</Text>
             <Text style={styles.subHeader}>Buscar por fecha</Text>
           </View>
-
-          <View style={styles.roomContainer}>
-            <Pressable style={({ pressed }) => [styles.rooms, pressed && styles.pressedRoom]} onPress={() => navigation.navigate(PagesConst.ROOMDETAIL)}>
-              <View style={styles.order}>
-                <Text style={styles.subHeader}>Santiago del Estero 1234</Text>
-                <Text>$8000</Text>
-              </View>
-              <Text>Cuenta con muchas cositas, Cuenta con muchas cositas, Cuenta con muchas cositas, Cuenta con muchas cositas,Cuenta.</Text>
-            </Pressable>          
-          </View>
-        </View>
-      </ScrollView>
-      <View style= {styles.container}>
-
           <FlatList
-          data={loggedUser.rooms}
-          renderItem={({ item }) => 
-          <Card type={TypeCard.CARDALLROOMS} item={item}></Card>
-          }
-          keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
+            data={rooms}
+            renderItem={({ item }) => (
+              <Card type={TypeCard.CARDALLROOMS} item={item} itemOwner = {itemOwner}></Card>
+
+            )} 
+            keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
           />
         </View>
-      </>
     );
   };
   
   const styles = StyleSheet.create({
     container:{
+      flex:1,
       marginHorizontal:10
     },
     order: {
@@ -82,11 +63,10 @@ const Rooms = ({ loggedUser, addLoggedUser}) => {
     },
     filterContainer: {
       padding:5,
+      marginHorizontal:6,
       marginVertical:20,
       borderWidth: 1,
       borderRadius: 5
-    },
-    roomContainer: {
     },
     rooms: {
       padding:5,
@@ -101,11 +81,14 @@ const Rooms = ({ loggedUser, addLoggedUser}) => {
   });
 
 const mapStateToProps = (state) => ({
+  userOwner: state.userOwnerReducer.userOwners,
   loggedUser: state.userOwnerReducer.loggedUser
+
+
 });
 
 const mapDispatchToPtops = {
-  addLoggedUser: UserActions.addLoggedUser,
+ 
 }
     
   

@@ -1,12 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Provider, connect } from 'react-redux';
 import { store } from './Redux/store';
 import { PagesConst } from './Const/_const';
 import { COLORS } from './Const/_styles';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Home from './Components/Home';
 import OwnerRegister from './Components/Login/OwnerRegister';
 import UserRegister from './Components/Login/UserRegister';
@@ -17,15 +17,25 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Profile from './Screens/Profile';
 import { UserActions } from './Redux/Actions/userAction';
 import AddRoom from './Screens/AddRoom';
+import { useBackHandler } from '@react-native-community/hooks';
 
 const App = () => {
-
-
   const Stack = createNativeStackNavigator();
   const BottomTabs = createBottomTabNavigator();
+
+  console.log('App');
   
-//  console.log(store.getState());
-  
+  const [user, setUser] = useState('');
+  useEffect(() => {
+    const userLog = store.getState().loggedUser;
+    setUser(userLog); 
+    if(userLog) setUser(userLog);
+    console.log('user state APP', user);
+    console.log('loggedUser APP', userLog);
+  }),[];
+
+  useBackHandler(() => { return true; });
+
   function OverviewScreen() {
     return (
       <BottomTabs.Navigator
@@ -37,7 +47,7 @@ const App = () => {
         },
       }}
       >
-   <BottomTabs.Screen name={PagesConst.ROOMS} component={Rooms}        
+    <BottomTabs.Screen name={PagesConst.ROOMS} component={Rooms}        
           options={{
             headerShown: false,
             headerTitleStyle: { color: 'white', fontSize: 15,},
@@ -55,16 +65,17 @@ const App = () => {
               <MaterialCommunityIcons name="guitar-pick" color={color} size={size} />
             ),
         }}/>
+       
       </BottomTabs.Navigator>
     )
   }
 
   return (
-    <>
-    <Provider store={store}>
+     <Provider store={store}>
       <StatusBar style='light' />
       <NavigationContainer>
-        <Stack.Navigator> 
+      <Stack.Navigator initialRouteName={PagesConst.SONAMOS}>
+       
           <Stack.Screen name={PagesConst.SONAMOS} component={OverviewScreen} 
           options={{
                 title: '♪ SONAMOS ♪',
@@ -72,7 +83,8 @@ const App = () => {
                 headerTitleStyle: { color: 'white' },
                 headerTitleAlign: 'center'
               }} />
-          <Stack.Screen name={PagesConst.HOME} component={Home} options={{headerShown: false}} />
+              
+          <Stack.Screen name={PagesConst.HOME} component={Home} options={{headerShown: false, gestureEnabled: false}} />
           <Stack.Screen name={PagesConst.OWNERREGISTER} component={OwnerRegister} />
           <Stack.Screen name={PagesConst.USERREGISTER} component={UserRegister}/>
           <Stack.Screen name={PagesConst.LOGIN} component={Login}/>
@@ -88,8 +100,7 @@ const App = () => {
          </Stack.Navigator>
         </NavigationContainer>
       </Provider>
-    </>
-   );
+  );
 }
 
     

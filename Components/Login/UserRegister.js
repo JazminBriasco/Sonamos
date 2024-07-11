@@ -7,6 +7,7 @@ import { UserObjectConst } from '../../Const/_const';
 import { User } from '../../Class/User';
 
 const UserRegister = ({addUser, getAllUsers, userOwner}) => {
+    console.log('UserRegister');
 
     const initialValues = new User('','','','','');
 

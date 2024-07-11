@@ -9,11 +9,17 @@ import { connect } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
 
 const Home = ({loggedUser, route}) => {
-    const navigation = useNavigation();
-    const [userLog, setUserLog] = useState(loggedUser);
-
-    console.log('loggedUser: ', loggedUser);
-   // console.log('navigation', route?.params);
+  const navigation = useNavigation();
+  console.log('HOME');
+  
+  /*const [userLog, setUserLog] = useState(undefined);
+  
+  
+  useEffect(() => {
+    console.log('loggedUser Home: ', loggedUser);
+    setUserLog(loggedUser);
+    console.log('userLog Home: ', userLog);
+    }),[];*/
 
     return (
         <View style={styles.container} >

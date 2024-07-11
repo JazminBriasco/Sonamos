@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { UserActions } from '../Redux/Actions/userAction';
 import { connect } from 'react-redux';
 
-const RoomDetail = ({room, loggedUser, addLoggedUser}) => {
+const RoomDetail = ({room}) => {
   
   const navigation = useNavigation();
 
@@ -35,11 +35,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  loggedUser: state.userOwnerReducer.loggedUser
 });
 
 const mapDispatchToPtops = {
-  addLoggedUser: UserActions.addLoggedUser,
 }
     
   
