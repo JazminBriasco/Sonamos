@@ -1,18 +1,18 @@
 import { Alert, Image, StyleSheet, Text, View } from "react-native";
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TypeCard } from "../Const/_const";
 import { UserActions } from "../Redux/Actions/userAction";
 import { connect } from "react-redux";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Card = ({type, item, getLoggedUser, itemOwner}) => {
     console.log('Card');
-
+    
     const editRoom = () => {
         console.log('EDIT');
     }
-
+    
     const reserveRoom = () => {
-        console.log('RESERVE');
+        console.log(`La sala a reservar es ${item.name} perteneciente a ${itemOwner.name}` )
     }
 
     const handleIconPress = () => {
@@ -58,7 +58,7 @@ const Card = ({type, item, getLoggedUser, itemOwner}) => {
         return (
             <View style={styles.containerCard}>
                 <View style={styles.containerHeader}>
-                        <Text>{item.name.toUpperCase()}, {itemOwner}</Text>
+                        <Text>{item.name.toUpperCase()}</Text>
                         <Text>${item.price} <MaterialCommunityIcons name="hand-front-left" size={18} color="#000" onPress={handleReservePress}/></Text>
                     </View>
                     <View style={styles.bodyCard}>

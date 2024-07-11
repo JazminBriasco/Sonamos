@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 const Rooms = ({ userOwner, loggedUser}) => {
   console.log('ROOMS');
   const [rooms, setRooms] = useState([]);
-  const [itemOwner, setItemOwner] = useState('DUEÑO');
+  const [itemOwner, setItemOwner] = useState('DUENO');
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -18,7 +18,22 @@ const Rooms = ({ userOwner, loggedUser}) => {
     if (loggedUser === undefined) navigation.navigate(PagesConst.LOGIN);
     const roomArray = userOwner.map(user => user.rooms).flat();
     setRooms(roomArray);
+    
+    console.log('Users: ', userOwner);
+    userOwner.forEach(element => {
+      console.log(element.name);
+    });;
   }, [userOwner]);
+
+  const renderItem = ({ item }) => (
+      <FlatList
+        data={item.rooms}
+        renderItem={({ item: room }) => (
+          <Card type={TypeCard.CARDALLROOMS} item={room} itemOwner = {item}></Card>
+        )}
+        keyExtractor={(room) => room.id} 
+      />
+  );
 
     return (
 
@@ -32,12 +47,8 @@ const Rooms = ({ userOwner, loggedUser}) => {
             <Text style={styles.subHeader}>Buscar por fecha</Text>
           </View>
           <FlatList
-            data={rooms}
-            renderItem={({ item }) => (
-              <Card type={TypeCard.CARDALLROOMS} item={item} itemOwner = {itemOwner}></Card>
-
-            )} 
-            keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
+            data={userOwner}
+            renderItem={renderItem} 
           />
         </View>
     );
